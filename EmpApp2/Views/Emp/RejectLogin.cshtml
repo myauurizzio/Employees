@@ -1,0 +1,14 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "RejectLogin";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="h2 text-danger">Доступ запрещён</div>
+<div class="p-0">Ваш пользователь <span class="text-black-50">@User.Identity.Name</span> не имеет доступа к системе.
+    </div>
+<br /><a asp-area="AzureAD" asp-controller="Account" asp-action="SignOut" class="btn btn-sm btn-outline-primary">Sign out</a>
+
+
+
+

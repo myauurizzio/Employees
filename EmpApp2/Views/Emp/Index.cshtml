@@ -1,0 +1,120 @@
+﻿@model List<EmpApp2.Models.Emps>
+@{
+    Layout = "_Layout";
+}
+
+@{
+//ViewData["Title"] = "EmpApp" + ViewBag.t;
+//@ViewBag.mode
+}
+
+<div class="container">
+
+
+
+
+        <div class="container">
+            <div class="row">
+                @if (ViewBag.isAdmin)
+                {
+                    <div class="col">
+                        <form method="post">
+                            <div class="text-left">
+                                <button class="btn btn-outline-success" type="submit">Добавить запись</button>
+                                <input type="hidden" name="Operation" id="Operation" value="ADD" />
+                            </div>
+                        </form>
+                    </div>
+                }
+                <div class="col text-center">
+                    <form method="post">
+                        <div class="text-center">
+                            <button class="btn btn-outline-info" type="submit">Диаграммы</button>
+                            <input type="hidden" name="Operation" id="Operation" value="CHARTS" />
+                        </div>
+                    </form>
+                </div>
+                @if (ViewBag.isAdmin)
+                {
+
+                    <div class="col text-right">
+                        <form method="post">
+                            <div class="text-right">
+                                <button class="btn btn-outline-danger" type="submit">Инициализация БД</button>
+                                <input type="hidden" name="Operation" id="Operation" value="RENEW" />
+                            </div>
+                        </form>
+                    </div>
+                }
+                </div>
+        </div>
+        <br />
+
+    
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+
+                <th scope="col">@Html.LabelFor(model => model[0].ID)</th>
+                <th scope="col">@Html.LabelFor(model => model[0].FirstName)</th>
+                <th scope="col">@Html.LabelFor(model => model[0].GivenName)</th>
+                <th scope="col">@Html.LabelFor(model => model[0].LastName)</th>
+                <th scope="col">@Html.LabelFor(model => model[0].Gender)</th>
+                <th scope="col">@Html.LabelFor(model => model[0].Position)</th>
+                <th scope="col">@Html.LabelFor(model => model[0].BirthDate)</th>
+                <th scope="col">@Html.LabelFor(model => model[0].Phone)</th>
+                @if (ViewBag.isAdmin)
+                {
+                    <th scope="col">@Html.Label("Edit")</th>
+                    <th scope="col">@Html.Label("Delete")</th>
+                }
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ID.ToString()<a name="@((item.ID+2).ToString())" /></td>
+                    <td>@item.FirstName</td>
+                    <td>@item.GivenName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.Gender</td>
+                    <td>@item.Position</td>
+                    <td>@item.BirthDate.ToString("dd.MM.yyyy")</td>
+                    <td>@item.Phone</td>
+                    @if (ViewBag.isAdmin)
+                    {
+                        <td class="text-center">
+                            <form method="post">
+                                <button class="btn btn-sm" type="submit"><img src="~/images/pensil20.png" class="img-fluid" /></button>
+                                <input type="hidden" name="SourceID" id="SourceID" value="@item.ID.ToString()" />
+                                <input type="hidden" name="Operation" id="Operation" value="EDIT" />
+                            </form>
+
+
+                        </td>
+                        <td class="text-center">
+                            <form method="post">
+                                <button class="btn btn-sm" type="submit"><img src="~/images/red_cross20.png" class="img-fluid" /></button>
+                                <input type="hidden" name="SourceID" id="SourceID" value="@item.ID.ToString()" />
+                                <input type="hidden" name="SourceROWID" id="SourceROWID" value="@item.ROWID.ToString()" />
+                                <input type="hidden" name="Operation" id="Operation" value="DELETE" />
+                            </form>
+
+
+                        </td>
+                    }
+                </tr>
+            }
+
+
+        </tbody>
+
+
+    </table>
+
+
+</div>

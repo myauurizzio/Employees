@@ -1,0 +1,117 @@
+﻿@using EmpApp2.Repositories
+@using EmpApp2.Controllers
+@model EmpApp2.Models.Emps
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "EditEmp";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<script src="~/js/EditEmp.js"></script>
+<script>
+</script>
+
+<div class="h2">
+    @(Model.ID != 0 ? "Редактирование" : "Добавление") сотрудника
+</div>
+<br />
+
+@{
+    //    @ViewBag.mode
+
+}
+
+@if (ViewBag.isAdmin)
+{
+
+    @using (Html.BeginForm("EditRecord", "Emp", FormMethod.Post, new { onsubmit = "return ValidateAll()", @class = "needs-validation", novalidate = "" }))
+    {
+
+        <table class="table table-bordered table-hover table-sm">
+            <tbody class="table-striped">
+                <tr>
+                    <td class="align-middle">@Html.LabelFor(m => m.FirstName, new { @class = "form-text " })</td>
+                    <td class="align-middle">
+                        <input value="@Model.FirstName" name="FirstName" id="FirstName" placeholder="Имя" type="text" class="form-control" maxlength="100" required />
+                        <div class="invalid-feedback">
+                            Допустимы только кириллические символы. Максимальная длина 100.
+                        </div>
+
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="align-middle">@Html.LabelFor(m => m.GivenName, new { @class = "form-text " })</td>
+                    <td class="align-middle">
+                        <input value="@Model.GivenName" name="GivenName" id="GivenName" placeholder="Отчество" type="text" class="form-control" maxlength="100" required />
+                        <div class="invalid-feedback">
+                            Допустимы только кириллические символы. Максимальная длина 100.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle">@Html.LabelFor(m => m.LastName, new { @class = "form-text " })</td>
+                    <td class="align-middle">
+                        <input value="@Model.LastName" name="LastName" id="LastName" placeholder="Фамилия" type="text" class="form-control" maxlength="100" required />
+                        <div class="invalid-feedback">
+                            Допустимы только кириллические символы. Максимальная длина 100.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle">@Html.LabelFor(m => m.Gender, new { @class = "form-text " })</td>
+                    <td class="align-middle">
+                        <select class="form-control" name="Gender" id="Gender" required>
+                            <option selected="@(Model.Gender == "М" ? "selected" : null)">М</option>
+                            <option selected="@(Model.Gender == "Ж" ? "selected" : null)">Ж</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle">@Html.LabelFor(m => m.Position, new { @class = "form-text " })</td>
+                    <td class="align-middle">
+                        <select class="form-control" name="Position" id="Position" required>
+                            @Html.Raw(ViewBag.position)
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle">@Html.LabelFor(m => m.BirthDate, new { @class = "form-text " })</td>
+                    <td class="align-middle">
+                        <input type="date" id="BirthDate" name="BirthDate" class="form-control"
+                               value="@(Model.ID != 0 ? Model.BirthDate.ToString("yyyy-MM-dd") : "1940-01-01")"
+                               min="1940-01-01" max="2005-12-31" required>
+                        <div class="invalid-feedback">
+                            Дата должна быть в диапазоне от 01 января 1940 года до 31 декабря 2005 года.
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle">@Html.LabelFor(m => m.Phone, new { @class = "form-text " })</td>
+                    <td class="align-middle">
+                        <input value="@Model.Phone" name="Phone" id="Phone" placeholder="+7(XXX)XXX-XX-XX" type="text" class="form-control" maxlength="16" required />
+                        <div class="invalid-feedback">
+                            Формат номера: +7(XXX)XXX-XX-XX
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="hidden" name="ID" id="ID" value="@Model.ID.ToString()" />
+        <input type="hidden" name="ROWID" id="ROWID" value="@(Model.ID != 0 ? Model.ROWID.ToString() : null)" />
+        <input type="hidden" name="Operation" id="Operation" value="@(Model.ID != 0 ? "EDIT" : "ADD")" />
+        <button class="btn btn-outline-primary" type="button" onclick="ValidateAll()">Проверить</button>
+        <button class="btn btn-outline-primary" type="submit">Сохранить</button>
+    }
+
+}
+else
+{
+
+    <div class="text-danger h1 text-center">
+        У вас нет разрешения на редактирование или добавление записей
+    </div>
+    <a asp-action="" class="btn btn-sm btn-outline-warning">Главная</a>
+}
+
